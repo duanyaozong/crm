@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h3>
+                添加班级学习记录
+                <small>Optional description</small>
+            </h3>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+                <li class="active">Here</li>
+            </ol>
+        </section>
+
+        <!-- action批量处理的form表单  -->
+        <form action="" method="post">
+            {% csrf_token %}
+            <ol class="breadcrumb">
+                <select name="action" id="" class="form-control" style="display: inline-block;width: 240px">
+                    <option value="patch">请选择批量处理方法</option>
+                    <option value="patch_init">批量创建学生学习记录</option>
+                </select>
+<!--                <button style="vertical-align: 0px" class="btn btn-danger">go</button>-->
+                <input type="submit" value="go" class="btn btn-danger">
+            </ol>
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title"><a href="" class="btn btn-primary btn-sm">添加班级学习记录</a></h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table  id="example2" class="text-center table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox"></th>
+                                            <th>编号</th>
+                                            <th>班级</th>
+                                            <th>节次</th>
+                                            <th>讲师</th>
+                                            <th>录入成绩</th>
+                                            <th>编辑</th>
+                                            <th>删除</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                     {% for cls_study_record in cls_study_record_list %}
+                                         <tr>
+                                             <td><input type="checkbox" name="selected_pk_list" value="{{ customer.pk }}"></td>
+                                             <td>{{ forloop.counter }}</td>
+                                             <td>{{ cls_study_record.class_obj }}</td>
+                                             <td>{{ cls_study_record.day_num }}</td>
+                                             <td>{{ cls_study_record.teacher }}</td>
+                                             <td><a href="/record_score/{{ cls_study_record.pk }}">录入成绩</a></td>
+                                             <td><a href=""><i class="fa fa-edit" aria-hidden="true"></i></a></td>
+                                             <td><a href=""><i class="fa fa-trash-o fa-lg"></i></a></td>
+                                         </tr>
+                                     {% endfor %}
+                                    </tbody>
+                                </table>
+                                <nav aria-label="Page navigation" class="pull-right">
+                                      <ul class="pagination">
+                                         {{ pagination.page_html|safe }}
+                                      </ul>
+                                </nav>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </section>
+            <!-- /.content -->
+        </form>
+    </div>
+{% endblock %}

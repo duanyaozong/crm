@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/static/bootstrap.css">
+</head>
+<body>
+<h3>客户成单量统计</h3>
+
+<hr>
+<a href="?date=today">今天</a>
+<a href="?date=zuotian">昨天</a>
+<a href="?date=week">最近一周</a>
+<a href="?date=recent_month">最近一个月</a>
+<hr>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table  id="example2" class="text-center table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">编号</th>
+                        <th class="text-center">客户姓名</th>
+                        <th class="text-center">性别</th>
+                        <th class="text-center">客户来源</th>
+                        <th class="text-center">销售</th>
+                        <th class="text-center">所报班级</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 {% for customer in customer_list %}
+                     <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.get_sex_display }}</td>
+                        <td>{{ customer.get_source_display }}</td>
+                        <td>{{ customer.consultant }}</td>
+                        <td>{{ customer.get_classlist }}</td>
+                     </tr>
+                 {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            <div id="container" style="width:600px;height:400px"></div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/static/highchart/highcharts.js"></script>
+<script>
+    var chart = Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: '统计成单量'
+        },
+        subtitle: {
+            text: '数据截止 2020-03，来源: <a href="https://en.wikipedia.org/wiki/List_of_cities_proper_by_population">Wikipedia</a>'
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: 0  // 设置轴标签旋转角度
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: '成单数'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: '成单人数: <b>{point.y} 单</b>'
+        },
+        series: [{
+            name: '总人口',
+            data: {{ ret|safe }},
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+                y: 10
+            }
+        }]
+    });
+
+</script>
+</body>
+</html>
